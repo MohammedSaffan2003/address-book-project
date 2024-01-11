@@ -1,0 +1,5 @@
+# Ignore compiled files
+bin/
+*.class
+
+todo.txt

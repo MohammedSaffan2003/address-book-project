@@ -1,0 +1,8 @@
+{
+    "java.project.referencedLibraries": [
+        {
+            "libraryName": "bin",
+            "libraryPath": "${workspaceFolder}/bin"
+        }
+    ]
+}
