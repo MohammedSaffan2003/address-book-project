@@ -3,15 +3,13 @@ package src.ui;
 import src.manager.AddressBookManager;
 import src.model.Contact;
 
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
-// Your main class representing the Address Book GUI
 public class AddressBookGUI extends JFrame {
-
     private AddressBookManager addressBookManager;
 
     // Constructor for the AddressBookGUI class
@@ -20,7 +18,6 @@ public class AddressBookGUI extends JFrame {
 
         // Initialize the AddressBookManager
         addressBookManager = new AddressBookManager();
-
     }
 
     // Method to initialize the user interface
@@ -58,8 +55,11 @@ public class AddressBookGUI extends JFrame {
         JButton addButton = new JButton("Add Contact"); // Button to add a contact
         JButton viewButton = new JButton("View Contacts"); // Button to view contacts
 
+        JButton updateButton = new JButton("Update Contact"); // Button to update a contact
+        JButton deleteButton = new JButton("Delete Contact"); // Button to delete a contact
+
         // Layout manager for the JFrame
-        setLayout(new GridLayout(9, 2)); // Use a 5x2 grid layout
+        setLayout(new GridLayout(10, 2)); // Use a 5x2 grid layout
         add(nameLabel); // Add the name label
         add(nameField); // Add the name text field
         add(phoneLabel); // Add the phone label
@@ -79,6 +79,8 @@ public class AddressBookGUI extends JFrame {
 
         add(addButton); // Add the "Add Contact" button
         add(viewButton); // Add the "View Contacts" button
+        add(updateButton); // Add the "Update Contact" button
+        add(deleteButton); // Add the "Delete Contact" button
 
         // Event handling for the buttons
         addButton.addActionListener(new ActionListener() {
@@ -122,13 +124,68 @@ public class AddressBookGUI extends JFrame {
             }
         });
 
+        // Event handling for the buttons
+updateButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Ask the user for the phone number to identify the contact
+        String phoneNumber = JOptionPane.showInputDialog(AddressBookGUI.this, "Enter Phone Number to Update:");
+
+        // Retrieve the contact based on the phone number
+        Contact existingContact = addressBookManager.getContactByPhone(phoneNumber);
+
+        if (existingContact != null) {
+            // Populate the fields with existing contact details
+            nameField.setText(existingContact.getName());
+            phoneField.setText(existingContact.getPhone());
+            emailField.setText(existingContact.getEmail());
+            addressField.setText(existingContact.getAddress());
+            cityField.setText(existingContact.getCity());
+            stateField.setText(existingContact.getState());
+            pinField.setText(existingContact.getPincode());
+            noteTextArea.setText(existingContact.getNote());
+
+            // Show a pop-up message indicating that the contact is ready for update
+            JOptionPane.showMessageDialog(AddressBookGUI.this, "Contact ready for update.");
+        } else {
+            // Show a pop-up message if the contact with the provided phone number doesn't exist
+            JOptionPane.showMessageDialog(AddressBookGUI.this, "Contact not found for the provided phone number.");
+        }
+    }
+});
+
+deleteButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Ask the user for the phone number to identify the contact
+        String phoneNumber = JOptionPane.showInputDialog(AddressBookGUI.this, "Enter Phone Number to Delete:");
+
+        // Delete the contact based on the phone number
+        boolean contactDeleted = addressBookManager.deleteContactByPhone(phoneNumber);
+
+        if (contactDeleted) {
+            // Show a pop-up message indicating that the contact is deleted
+            JOptionPane.showMessageDialog(AddressBookGUI.this, "Contact deleted successfully.");
+        } else {
+            // Show a pop-up message if the contact with the provided phone number doesn't exist
+            JOptionPane.showMessageDialog(AddressBookGUI.this, "Contact not found for the provided phone number.");
+        }
+    }
+});
+
         setVisible(true); // Make the window visible
     }
 
     // Main method, the entry point of the Java application
     public static void main(String[] args) {
-        // Use SwingUtilities.invokeLater to ensure GUI-related tasks are processed on
+        // Usings SwingUtilities.invokeLater to ensure GUI-related tasks are processed on
         // the event dispatch thread
+        String jdbcUrl = "jdbc:mysql://localhost:3306/database_name";
+        String dbUser = "database_user_name";
+        String dbPassword = "database_password";
+
+        AddressBookManager addressBookManager = new AddressBookManager(jdbcUrl, dbUser, dbPassword);
+
         SwingUtilities.invokeLater(() -> new AddressBookGUI());
     }
 }

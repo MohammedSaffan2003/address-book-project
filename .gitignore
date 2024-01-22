@@ -3,3 +3,5 @@ bin/
 *.class
 
 todo.txt
+.vscode
+.gitignore
