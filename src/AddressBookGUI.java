@@ -12,7 +12,11 @@ public class AddressBookGUI extends JFrame {
         initializeUI(); // Call a method to set up the initial user interface
 
         // Initialize the AddressBookManager
-        addressBookManager = new AddressBookManager();
+        String jdbcUrl = "jdbc:mysql://localhost:3306/ContactManager";
+        String dbUser = "root";
+        String dbPassword = "HaveIBeenHacked";
+
+        addressBookManager = new AddressBookManager(jdbcUrl, dbUser, dbPassword);
     }
 
     // Method to initialize the user interface
@@ -32,13 +36,13 @@ public class AddressBookGUI extends JFrame {
         JLabel emaiLabel = new JLabel("Email :"); // Label for the email field
         JTextField emailField = new JTextField(); // Text field for entering the email address
 
-        JLabel addressLabel = new JLabel("Address :"); // Label for the adsdress
+        JLabel addressLabel = new JLabel("Address :"); // Label for the address
         JTextField addressField = new JTextField(); // Text field
 
-        JLabel cityLabel = new JLabel("City :"); // Label for the adsdress
+        JLabel cityLabel = new JLabel("City :"); // Label for the address
         JTextField cityField = new JTextField(); // Text field
 
-        JLabel stateLabel = new JLabel("State :"); // Label for the adsdress
+        JLabel stateLabel = new JLabel("State :"); // Label for the address
         JTextField stateField = new JTextField(); // Text field
 
         JLabel pinLabel = new JLabel("Pincode :");
@@ -120,6 +124,8 @@ public class AddressBookGUI extends JFrame {
         });
 
         // Event handling for the buttons
+
+        // Event handling for the update button
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -130,18 +136,11 @@ public class AddressBookGUI extends JFrame {
                 Contact existingContact = addressBookManager.getContactByPhone(phoneNumber);
 
                 if (existingContact != null) {
-                    // Populate the fields with existing contact details
-                    nameField.setText(existingContact.getName());
-                    phoneField.setText(existingContact.getPhone());
-                    emailField.setText(existingContact.getEmail());
-                    addressField.setText(existingContact.getAddress());
-                    cityField.setText(existingContact.getCity());
-                    stateField.setText(existingContact.getState());
-                    pinField.setText(existingContact.getPincode());
-                    noteTextArea.setText(existingContact.getNote());
+                    // Create a new dialog for updating the contact details
+                    JDialog updateDialog = new ContactUpdateDialog(addressBookManager, existingContact);
 
-                    // Show a pop-up message indicating that the contact is ready for update
-                    JOptionPane.showMessageDialog(AddressBookGUI.this, "Contact ready for update.");
+                    // Set the dialog to be visible
+                    updateDialog.setVisible(true);
                 } else {
                     // Show a pop-up message if the contact with the provided phone number doesn't
                     // exist
@@ -186,7 +185,6 @@ public class AddressBookGUI extends JFrame {
         String dbPassword = "HaveIBeenHacked";
 
         AddressBookManager addressBookManager = new AddressBookManager(jdbcUrl, dbUser, dbPassword);
-
         SwingUtilities.invokeLater(() -> new AddressBookGUI());
     }
 }

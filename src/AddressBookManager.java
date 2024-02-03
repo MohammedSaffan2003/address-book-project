@@ -1,4 +1,3 @@
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -124,6 +123,27 @@ public class AddressBookManager {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to delete contact by phone from the database.");
+        }
+    }
+
+    public void updateContact(Contact updatedContact) {
+        // Write the SQL query to update the contact in the database
+        String updateSQL = "UPDATE contacts SET name=?, email=?, address=?, city=?, state=?, pincode=?, note=? WHERE phone=?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
+            preparedStatement.setString(1, updatedContact.getName());
+            preparedStatement.setString(2, updatedContact.getEmail());
+            preparedStatement.setString(3, updatedContact.getAddress());
+            preparedStatement.setString(4, updatedContact.getCity());
+            preparedStatement.setString(5, updatedContact.getState());
+            preparedStatement.setString(6, updatedContact.getPincode());
+            preparedStatement.setString(7, updatedContact.getNote());
+            preparedStatement.setString(8, updatedContact.getPhone());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to update contact in the database.");
         }
     }
 }
