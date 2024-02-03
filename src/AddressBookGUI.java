@@ -1,8 +1,3 @@
-package src.ui;
-
-import src.manager.AddressBookManager;
-import src.model.Contact;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -125,64 +120,70 @@ public class AddressBookGUI extends JFrame {
         });
 
         // Event handling for the buttons
-updateButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // Ask the user for the phone number to identify the contact
-        String phoneNumber = JOptionPane.showInputDialog(AddressBookGUI.this, "Enter Phone Number to Update:");
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Ask the user for the phone number to identify the contact
+                String phoneNumber = JOptionPane.showInputDialog(AddressBookGUI.this, "Enter Phone Number to Update:");
 
-        // Retrieve the contact based on the phone number
-        Contact existingContact = addressBookManager.getContactByPhone(phoneNumber);
+                // Retrieve the contact based on the phone number
+                Contact existingContact = addressBookManager.getContactByPhone(phoneNumber);
 
-        if (existingContact != null) {
-            // Populate the fields with existing contact details
-            nameField.setText(existingContact.getName());
-            phoneField.setText(existingContact.getPhone());
-            emailField.setText(existingContact.getEmail());
-            addressField.setText(existingContact.getAddress());
-            cityField.setText(existingContact.getCity());
-            stateField.setText(existingContact.getState());
-            pinField.setText(existingContact.getPincode());
-            noteTextArea.setText(existingContact.getNote());
+                if (existingContact != null) {
+                    // Populate the fields with existing contact details
+                    nameField.setText(existingContact.getName());
+                    phoneField.setText(existingContact.getPhone());
+                    emailField.setText(existingContact.getEmail());
+                    addressField.setText(existingContact.getAddress());
+                    cityField.setText(existingContact.getCity());
+                    stateField.setText(existingContact.getState());
+                    pinField.setText(existingContact.getPincode());
+                    noteTextArea.setText(existingContact.getNote());
 
-            // Show a pop-up message indicating that the contact is ready for update
-            JOptionPane.showMessageDialog(AddressBookGUI.this, "Contact ready for update.");
-        } else {
-            // Show a pop-up message if the contact with the provided phone number doesn't exist
-            JOptionPane.showMessageDialog(AddressBookGUI.this, "Contact not found for the provided phone number.");
-        }
-    }
-});
+                    // Show a pop-up message indicating that the contact is ready for update
+                    JOptionPane.showMessageDialog(AddressBookGUI.this, "Contact ready for update.");
+                } else {
+                    // Show a pop-up message if the contact with the provided phone number doesn't
+                    // exist
+                    JOptionPane.showMessageDialog(AddressBookGUI.this,
+                            "Contact not found for the provided phone number.");
+                }
+            }
+        });
 
-deleteButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // Ask the user for the phone number to identify the contact
-        String phoneNumber = JOptionPane.showInputDialog(AddressBookGUI.this, "Enter Phone Number to Delete:");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Ask the user for the phone number to identify the contact
+                String phoneNumber = JOptionPane.showInputDialog(AddressBookGUI.this, "Enter Phone Number to Delete:");
 
-        // Delete the contact based on the phone number
-        boolean contactDeleted = addressBookManager.deleteContactByPhone(phoneNumber);
+                // Delete the contact based on the phone number
+                boolean contactDeleted = addressBookManager.deleteContactByPhone(phoneNumber);
 
-        if (contactDeleted) {
-            // Show a pop-up message indicating that the contact is deleted
-            JOptionPane.showMessageDialog(AddressBookGUI.this, "Contact deleted successfully.");
-        } else {
-            // Show a pop-up message if the contact with the provided phone number doesn't exist
-            JOptionPane.showMessageDialog(AddressBookGUI.this, "Contact not found for the provided phone number.");
-        }
-    }
-});
+                if (contactDeleted) {
+                    // Show a pop-up message indicating that the contact is deleted
+                    JOptionPane.showMessageDialog(AddressBookGUI.this, "Contact deleted successfully.");
+                } else {
+                    // Show a pop-up message if the contact with the provided phone number doesn't
+                    // exist
+                    JOptionPane.showMessageDialog(AddressBookGUI.this,
+                            "Contact not found for the provided phone number.");
+                }
+            }
+        });
 
         setVisible(true); // Make the window visible
     }
 
     // Main method, the entry point of the Java application
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
-        // Usings SwingUtilities.invokeLater to ensure GUI-related tasks are processed on
+        // Usings SwingUtilities.invokeLater to ensure GUI-related tasks are processed
+        // on
         // the event dispatch thread
-        String jdbcUrl = "jdbc:mysql://localhost:3306/database_name";
-        String dbUser = "database_user_name";
-        String dbPassword = "database_password";
+        String jdbcUrl = "jdbc:mysql://localhost:3306/ContactManager";
+        String dbUser = "root";
+        String dbPassword = "HaveIBeenHacked";
 
         AddressBookManager addressBookManager = new AddressBookManager(jdbcUrl, dbUser, dbPassword);
 

@@ -1,4 +1,3 @@
-package src.model;
 
 public class Contact {
     private String name;
@@ -93,14 +92,14 @@ public class Contact {
     @Override
     public String toString() {
         return "Contact{" +
-                "name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", pincode='" + pincode + '\'' +
-                ", note='" + note + '\'' +
+                "Name='" + name + '\'' +
+                ", Phone='" + phone + '\'' +
+                ", Email='" + email + '\'' +
+                ", Address='" + address + '\'' +
+                ", City='" + city + '\'' +
+                ", State='" + state + '\'' +
+                ", Pincode='" + pincode + '\'' +
+                ", Note='" + note + '\'' +
                 '}';
     }
 }

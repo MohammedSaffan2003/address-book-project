@@ -1,8 +1,24 @@
 {
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        {
-            "libraryName": "bin",
-            "libraryPath": "${workspaceFolder}/bin"
-        }
+        "lib/**/*.jar",
+        "d:\\MySQL\\JDBC-Driver\\mysql-connector-j-8.3.0\\mysql-connector-j-8.3.0.jar"
     ]
 }
+
+
+
+
+// {
+//     "java.project.referencedLibraries": [
+//         {
+//             "libraryName": "bin",
+//             "libraryPath": "${workspaceFolder}/bin"
+            
+//         },
+//         "d:\\MySQL\\JDBC-Driver\\mysql-connector-j-8.3.0\\mysql-connector-j-8.3.0.jar"
+//     ]
+// }

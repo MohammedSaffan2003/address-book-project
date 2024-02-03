@@ -1,6 +1,3 @@
-package src.manager;
-
-import src.model.Contact;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddressBookManager {
-    private Connection connection;
+    private static Connection connection = null;
 
     public AddressBookManager(String jdbcUrl, String dbUser, String dbPassword) {
         try {
@@ -19,7 +16,7 @@ public class AddressBookManager {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             // Establish the database connection
-            this.connection = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
+            connection = DriverManager.getConnection(jdbcUrl, dbUser, dbPassword);
 
             // Create the necessary table if it doesn't exist
             createTableIfNotExists();
@@ -29,9 +26,14 @@ public class AddressBookManager {
         }
     }
 
+    public AddressBookManager() {
+        // TODO Auto-generated constructor stub
+    }
+
     private void createTableIfNotExists() {
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS contacts (id INT AUTO_INCREMENT PRIMARY KEY, " +
-                "name VARCHAR(255), phone VARCHAR(20) NOT NULL, email VARCHAR(255), address VARCHAR(255), " +
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS contacts (id INT AUTO_INCREMENT UNIQUE, " +
+                "name VARCHAR(255) NOT NULL, phone VARCHAR(20) PRIMARY KEY, email VARCHAR(255) , address VARCHAR(255), "
+                +
                 "city VARCHAR(255), state VARCHAR(255), pincode VARCHAR(10), note TEXT)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(createTableSQL)) {
@@ -67,7 +69,7 @@ public class AddressBookManager {
         String selectSQL = "SELECT * FROM contacts";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+                ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
                 Contact contact = new Contact(
@@ -78,8 +80,7 @@ public class AddressBookManager {
                         resultSet.getString("city"),
                         resultSet.getString("state"),
                         resultSet.getString("pincode"),
-                        resultSet.getString("note")
-                );
+                        resultSet.getString("note"));
                 contacts.add(contact);
             }
         } catch (SQLException e) {
@@ -104,8 +105,7 @@ public class AddressBookManager {
                             resultSet.getString("city"),
                             resultSet.getString("state"),
                             resultSet.getString("pincode"),
-                            resultSet.getString("note")
-                    );
+                            resultSet.getString("note"));
                 }
             }
         } catch (SQLException e) {
@@ -114,7 +114,7 @@ public class AddressBookManager {
         }
         return null; // Return null if the contact is not found
     }
-    
+
     public boolean deleteContactByPhone(String phoneNumber) {
         String deleteSQL = "DELETE FROM contacts WHERE phone = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
